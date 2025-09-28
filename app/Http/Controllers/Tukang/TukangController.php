@@ -15,7 +15,8 @@ class TukangController extends Controller
      */
     public function index()
     {
-        $orders = Order::where('tukang_id', auth()->user()->tukang->id)->get();
+        $tukangId = 1; 
+        $orders = Order::where('tukang_id', $tukangId)->get();
         return view('tukang.dashboard', compact('orders'));
     }
     public function acceptOrder($id)

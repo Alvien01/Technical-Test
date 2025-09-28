@@ -17,7 +17,7 @@ class OrderController extends Controller
     {
         $tukangs = Tukang::all();
         $orders = Order::where('user_id', auth()->id())->get();
-        return view('user.orders.index', compact('tukangs', 'orders'));
+        return view('user.order.index', compact('tukangs', 'orders'));
     }
 
     /**

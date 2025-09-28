@@ -43,4 +43,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function tukang()
+{
+    return $this->hasOne(Tukang::class, 'user_id');
+}
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
