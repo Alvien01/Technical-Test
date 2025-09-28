@@ -24,7 +24,7 @@
                     <td>{{ $order->user->name }}</td>
                     <td>{{ $order->start_date }}</td>
                     <td>{{ $order->duration_days }} hari</td>
-                    <td>{{ $order->status }}</td>
+                    <td>{{ ucfirst($order->status) }}</td>
                     <td>
                         @if($order->status === 'pending')
                         <form action="{{ route('tukang.order.accept', $order->id) }}" method="POST" style="display:inline-block;">
@@ -35,16 +35,23 @@
                             @csrf
                             <button class="btn btn-danger btn-sm">Tolak</button>
                         </form>
+
                         @elseif($order->status === 'accepted')
-                        <form action="{{ route('tukang.order.status', $order->id) }}" method="POST">
+                        <form action="{{ route('tukang.order.status', $order->id) }}" method="POST" style="display:inline-block;">
                             @csrf
-                            <select name="status" class="form-select form-select-sm d-inline-block w-auto">
-                                <option value="on-the-way">Berangkat</option>
-                                <option value="arrived">Sampai</option>
-                                <option value="completed">Selesai</option>
-                            </select>
-                            <button class="btn btn-primary btn-sm">Update</button>
+                            <input type="hidden" name="status" value="on-the-way">
+                            <button class="btn btn-primary btn-sm">Berangkat</button>
                         </form>
+
+                        @elseif($order->status === 'on-the-way')
+                        <form action="{{ route('tukang.order.status', $order->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            <input type="hidden" name="status" value="completed">
+                            <button class="btn btn-success btn-sm">Selesaikan</button>
+                        </form>
+
+                        @elseif($order->status === 'completed')
+                        <span class="badge bg-success">Selesai</span>
                         @endif
                     </td>
                 </tr>

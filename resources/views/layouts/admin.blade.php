@@ -52,38 +52,35 @@
     @stack('styles')
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark px-3">
         <span class="hamburger" id="hamburger">&#9776;</span>
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Technical Test</a>
+        <a class="navbar-brand" href="#">Technical Test</a>
     </nav>
-
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h5 class="text-white px-3">Menu</h5>
         <hr class="bg-secondary">
-
-        {{-- Admin Menu --}}
-        <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
-        <a href="{{ route('tukang.index') }}">Kelola Tukang</a>
-        <a href="{{ route('order.index') }}">Kelola Order</a>
-
-        {{-- Tukang Menu --}}
-        <a href="{{ route('tukang.dashboard') }}">Dashboard Tukang</a>
-        {{-- contoh: order actions tidak ditampilkan di sidebar karena biasanya tombol di halaman --}}
-
-        {{-- User Menu --}}
-        <a href="{{ route('user.dashboard') }}">Dashboard User</a>
-        <a href="{{ route('user.order.index') }}">Pesanan Saya</a>
-
-        {{-- Auth --}}
-        <form action="{{ route('logout') }}" method="POST" class="mt-3 px-3">
-            @csrf
-            <button class="btn btn-danger w-100">Logout</button>
-        </form>
+        @if(auth()->check())
+            {{-- Admin Menu --}}
+            @if(auth()->user()->role === 'admin')
+                <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
+                <a href="{{ route('tukang.index') }}">Kelola Tukang</a>
+                <a href="{{ route('order.index') }}">Kelola Order</a>
+                <hr class="bg-secondary">
+                <a href="{{ route('tukang.dashboard') }}">Dashboard Tukang</a>
+                <a href="{{ route('dashboard') }}">Dashboard User</a>
+                <a href="{{ route('order.index') }}">Pesanan Saya</a>
+            @elseif(auth()->user()->role === 'tukang')
+                <a href="{{ route('tukang.dashboard') }}">Dashboard Tukang</a>
+            @elseif(auth()->user()->role === 'user')
+                <a href="{{ route('dashboard') }}">Dashboard User</a>
+                <a href="{{ route('order.index') }}">Pesanan Saya</a>
+            @endif
+            <form action="{{ route('logout') }}" method="POST" class="mt-3 px-3">
+                @csrf
+                <button class="btn btn-danger w-100">Logout</button>
+            </form>
+        @endif
     </div>
-
-    <!-- Content -->
     <div class="content" id="content">
         <main class="container mt-4">
             @yield('content')

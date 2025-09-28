@@ -8,7 +8,7 @@
         <div class="card mb-3">
             <div class="card-body">
                 <h3>Pesan Tukang</h3>
-                <form action="{{ route('user.order.store') }}" method="POST">
+                <form action="{{ route('order.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="tukang_id" class="form-label">Pilih Tukang</label>

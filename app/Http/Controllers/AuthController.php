@@ -28,7 +28,7 @@ class AuthController extends Controller
             } elseif (Auth::user()->role == 'tukang') {
                 return redirect()->route('tukang.dashboard');
             } else {
-                return redirect()->route('user.dashboard');
+                return redirect()->route('dashboard');
             }
         }
 

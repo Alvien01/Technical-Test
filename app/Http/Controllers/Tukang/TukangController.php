@@ -13,18 +13,23 @@ class TukangController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+      public function index()
     {
-        $tukangId = 1; 
+        // Ambil tukang dari user login
+        $tukangId = auth()->user()->tukang->id;
+
+        // Ambil order untuk tukang ini
         $orders = Order::where('tukang_id', $tukangId)->get();
+
         return view('tukang.dashboard', compact('orders'));
     }
+
     public function acceptOrder($id)
     {
         $order = Order::findOrFail($id);
         $order->update(['status' => 'accepted']);
         $order->histories()->create(['status' => 'accepted']);
-        return back();
+        return back()->with('success', 'Order berhasil diterima');
     }
 
     public function rejectOrder($id)
@@ -32,18 +37,28 @@ class TukangController extends Controller
         $order = Order::findOrFail($id);
         $order->update(['status' => 'rejected']);
         $order->histories()->create(['status' => 'rejected']);
-        return back();
+        return back()->with('success', 'Order berhasil ditolak');
     }
 
-    public function updateStatus($id)
+    public function updateStatus($id, Request $request)
     {
         $order = Order::findOrFail($id);
-        $newStatus = request('status');
-        $order->update(['status' => $newStatus]);
-        $order->histories()->create(['status' => $newStatus]);
-        return back();
-    }
+        $newStatus = $request->status;
 
+        // Validasi transisi status agar tidak lompat
+        $validTransitions = [
+            'accepted'   => ['on-the-way'],
+            'on-the-way' => ['completed'],
+        ];
+
+        if (isset($validTransitions[$order->status]) && in_array($newStatus, $validTransitions[$order->status])) {
+            $order->update(['status' => $newStatus]);
+            $order->histories()->create(['status' => $newStatus]);
+            return back()->with('success', 'Status order diperbarui');
+        }
+
+        return back()->with('error', 'Transisi status tidak valid');
+    }
     /**
      * Show the form for creating a new resource.
      */
