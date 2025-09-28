@@ -10,11 +10,11 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Admin Panel</a>
+            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Technical test</a>
             <div>
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.tukang.index') }}">Tukang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.order.index') }}">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Tukang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Orders</a></li>
                 </ul>
             </div>
         </div>

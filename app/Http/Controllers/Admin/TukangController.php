@@ -9,5 +9,9 @@ use App\Models\User;
 
 class TukangController extends Controller
 {
-    //
+    public function index()
+    {
+        $tukangs = Tukang::with('user')->get();
+        return view('admin.tukang.index', compact('tukangs'));
+    }
 }
